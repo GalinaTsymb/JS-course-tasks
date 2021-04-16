@@ -1,0 +1,48 @@
+
+body{
+    background: #8B868B;
+    font-family: Bahnschrift, sans-serif;
+}
+.container{
+    width: 1240px;
+    margin: 0 auto;
+
+}
+.data-wrapper{
+    padding: 30px 30px;
+}
+
+h1{
+    font-size: 34px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #404041;
+}
+.data_list{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    margin-top: 20px;
+    list-style-type: none;
+    padding: 0;
+}
+.data_item{
+    width: calc(100% / 3 - 150px);
+    margin: 10px 10px;
+    border: 1px solid #404041;
+    padding: 20px 20px;
+
+}
+p {
+    font-size: 16px;
+    color:#404041;
+
+}
+p strong{
+    font-size: 14px;
+}
+p span{
+    display: block;
+    padding-left: 40px;
+}
