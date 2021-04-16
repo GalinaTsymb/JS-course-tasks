@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDoList</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+    <div class="todo-wrap">
+        <h1>TODO LIST</h1>
+        <div class="todo-list js_todo_list">
+            <div class="row js_todo_item">
+                <div class="c5 js_item_text">Test text</div>
+                <div class="c2 js_item_action">
+                    <button type="button" title="Edit">!</button>
+                    <button type="button" title="Remove">X</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="c5">
+                <input type="text" class="js_add_input">
+            </div>
+            <div class="c2">
+                <button type="button" class="js_add" data-action="add">+</button>
+                <button type="button" class="js_save" style="display: none" data-action="save">Save</button>
+                <button type="button" class="js_cancel" style="display: none" data-action="cancel">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="customization.js"></script>
+</body>
+</html>
