@@ -71,13 +71,16 @@
     // отметить как выполненое
     function doneTask(event, index){
 
-        event.style.textDecoration === 'line-through' ? event.style.textDecoration = '': event.style.textDecoration = 'line-through';
-
-
-        tasks.forEach(function(item,ind){
-            ind === index && item.status === false ? item.status = true : item.status = false;
+        tasks.map(function(item, ind){
+            if(index === ind && item.status === false){
+                item.status = true;
+                event.style.textDecoration = 'line-through';
+            }
+            else if(index === ind && item.status === true){
+                item.status = false;
+                event.style.textDecoration = '';
+            }
         });
-        console.log("tasks", tasks);
         saveData();
     }
 
