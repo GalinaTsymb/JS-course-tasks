@@ -4,11 +4,11 @@ import {quantityInCartLS,
 import Cart from "./modules/cart";
 
 (function() {
-const LINK                  = 'http://my-json-server.typicode.com/achubirka/db/products';
-const COUNTER_CART          = document.querySelector('.js-counter-cart');
-const PRODUCTS_CART_CONTAINER    = document.querySelector('.js-cart-list');
-const TOTAL_SUM             = document.querySelector('.js-total-sum');
-let PRODUCT_LIST            = document.querySelector('.js-product-list');
+const LINK                          = 'http://my-json-server.typicode.com/achubirka/db/products';
+const COUNTER_CART                  = document.querySelector('.js-counter-cart');
+const PRODUCTS_CART_CONTAINER       = document.querySelector('.js-cart-list');
+const TOTAL_SUM                     = document.querySelector('.js-total-sum');
+let PRODUCT_LIST                    = document.querySelector('.js-product-list');
 
 
 let goods = [];

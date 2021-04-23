@@ -2,7 +2,6 @@ import {getGoodsLS,
         setGoodLS,
         quantityInCartLS
        } from './localStorage.js';
-import {toolTip} from './tooltipElem';
 
 
 export default class Cart {
@@ -65,8 +64,7 @@ export default class Cart {
         }*/
     }
     renderCart(data, selector){
-        //let data = getGoodsLS(this.productsInCart);
-        toolTip();
+
         Object.values(data).map((item, index) =>{
             selector.innerHTML += `<li class="cart__item">
                                     <div>
@@ -74,7 +72,7 @@ export default class Cart {
                                         <div class="cart__item-counter-wrap" >
                                             <button class="cart__item-minus js-btn-minus" data-index="${item.id}" data-action="minus">-</button>
                                             <span class="cart__item-counter js-counter">${item.availableInCart}</span>
-                                            <button class="cart__item-plus js-btn-plus" ${this.toolTipPlus(item.available)} data-index="${item.id}" data-action="plus">+</button>                                        
+                                            <button class="cart__item-plus js-btn-plus" ${this.disabledTrue(item.available)} data-index="${item.id}" data-action="plus">+</button>                                        
                                         </div>
                                     </div>
                                     <div class="cart__item-sum-wrap">
@@ -83,10 +81,9 @@ export default class Cart {
                                 </li>`
         });
     }
-    toolTipPlus(value){
+    disabledTrue(value){
         if (value === 0){
-            toolTip();
-            return "data-tooltip = 'product is no longer in stock'";
+            return "disabled";
         }
     }
     totalCostADD(product){
