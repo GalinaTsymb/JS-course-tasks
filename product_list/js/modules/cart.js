@@ -68,15 +68,17 @@ export default class Cart {
         //let data = getGoodsLS(this.productsInCart);
         toolTip();
         Object.values(data).map((item, index) =>{
-            selector.innerHTML += `<li class="products__cart-item">
+            selector.innerHTML += `<li class="cart__item">
                                     <div>
-                                        <p class="products__name js-products-name">${item.name}</p>
-                                        <button class="js-btn-minus" data-index="${item.id}" data-action="minus">-</button>
-                                        <span class="js-counter">${item.availableInCart}</span>
-                                        <button class="js-btn-plus" ${this.toolTipPlus(item.available)} data-index="${item.id}" data-action="plus">+</button>                                        
+                                        <p class="cart__item-name js-products-name">${item.name}</p>
+                                        <div class="cart__item-counter-wrap" >
+                                            <button class="cart__item-minus js-btn-minus" data-index="${item.id}" data-action="minus">-</button>
+                                            <span class="cart__item-counter js-counter">${item.availableInCart}</span>
+                                            <button class="cart__item-plus js-btn-plus" ${this.toolTipPlus(item.available)} data-index="${item.id}" data-action="plus">+</button>                                        
+                                        </div>
                                     </div>
-                                    <div>
-                                        <span class="js-sum">$${item.availableInCart * item.price}</span>
+                                    <div class="cart__item-sum-wrap">
+                                        <span class="cart__item-sum js-sum">$ ${(item.availableInCart * item.price).toFixed(2)}</span>
                                     </div>                                        
                                 </li>`
         });
@@ -94,7 +96,7 @@ export default class Cart {
 
 
         if(cartCost != null){
-            cartCost = parseInt(cartCost);
+            cartCost = parseFloat(cartCost);
             localStorage.setItem("totalCost", cartCost + product.price);
         }else{
             localStorage.setItem("totalCost",product.price );
@@ -108,7 +110,7 @@ export default class Cart {
 
 
         if(cartCost != null){
-            cartCost = parseInt(cartCost);
+            cartCost = parseFloat(cartCost);
             localStorage.setItem("totalCost", cartCost - product.price);
         }else{
             //localStorage.setItem("totalCost",product.price );
@@ -123,7 +125,7 @@ export default class Cart {
         if(cartItems && selectorCartCont){
             this.renderCart(cartItems, selectorCartCont);
         }
-        selectorTotalSum.innerHTML = cartCost;
+        selectorTotalSum.innerHTML = cartCost || (0).toFixed(2);
     }
 
     renderCartChange(selectorCartCont, selectorTotalSum){

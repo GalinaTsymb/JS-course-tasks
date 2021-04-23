@@ -2,6 +2,7 @@
 
   &__wrapper{
     padding: 55px 25px;
+    align-items: flex-start;
   }
 
   &__list{
@@ -44,10 +45,9 @@
   }
 
   &__btn-add{
-    margin-left: 16px;
+    position: absolute;
+    left: 90px;
+    top: 50%;
   }
 
-  &__cart{
-    background: $color-light-grey;
-  }
 }
