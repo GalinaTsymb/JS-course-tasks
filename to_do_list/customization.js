@@ -1,7 +1,52 @@
 
 (function(){
 
-    const APP_EL        = document.getElementById('app'); // елементы с id попадают в глобальную область видимости const APP_EL = app
+    let ukraineCity = [];
+
+    const cityRequest = async () => {
+        fetch('http://my-json-server.typicode.com/achubirka/db/products')
+            .then(
+                function (response) {
+                    if (response.status !== 200) {
+                        console.log('Looks like there was a problem. Status Code: ' +
+                            response.status);
+                        return;
+                    }
+                    response.json().then(function (data) {
+
+                        for (let i = 0; i < data.length; i++) {
+
+                                ukraineCity.push(data[i]);
+
+
+                        }
+                    })
+                })
+    };
+    let city = cityRequest();
+    console.log('ukraine', ukraineCity);
+    console.log('ukraine len', ukraineCity.length);
+
+
+    async function show(title){
+        let tit = await title;
+        for (let i = 0; i < tit.length; i++) {
+            console.log('answer len', tit.length);
+            console.log("answer", tit[i].name);
+        }
+    /*    document.querySelector('.js_todo_list').addEventListener("click",  () => {
+            for (let i = 0; i < title.length; i++) {
+                console.log('answer len', title.length);
+                console.log("answer", title[i].name);
+            }
+        });*/
+    }
+    show(ukraineCity);
+
+
+
+
+    /*const APP_EL        = document.getElementById('app'); // елементы с id попадают в глобальную область видимости const APP_EL = app
     const ADD_BTN       = APP_EL.querySelector('.js_add'); // APP_EL, чтобы не искать по всему документу
     const SAVE_BTN      = APP_EL.querySelector('.js_save');
     const CANCEL_BTN    = APP_EL.querySelector('.js_cancel');
@@ -20,14 +65,15 @@
         status: false
     }];
 
-    /**
+    /!**
      * отрисовка тасков
      * на входе в map - обьект с данными (tasks), индекс
      * data-index - соответствует индексу в массиве
      * после того как map нам возвращает новый массив с обработанными шаблонами, соеденяем это все (join) в строку и помещаем tasks_html
      * по атрибуту data-action - определяем по какой кнопке произошло событие
-     */
+     *!/
     function render (){
+        console.log('tasks', tasks);
 
             let tasks_html = tasks.map(function (value, index) {
                 return `
@@ -152,5 +198,5 @@
     (CANCEL_BTN) && CANCEL_BTN.addEventListener('click', function (event) {
         endEdit();
     });
-
+*/
 })();

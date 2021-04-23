@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4715880d-3aee-4829-b697-d7b6a01c4ce4" name="Default Changelist" comment="" />
+    <list default="true" id="4715880d-3aee-4829-b697-d7b6a01c4ce4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../to_do_list/customization.js" beforeDir="false" afterPath="$PROJECT_DIR$/../to_do_list/customization.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,7 +14,11 @@
       <executable />
     </execution>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProjectId" id="1rFHnerXhIpFNUQrHzXllhZK0a4" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -21,7 +27,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../weather" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../to_do_list" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -34,6 +40,7 @@
       <option name="presentableId" value="Default" />
       <updated>1618565085827</updated>
       <workItem from="1618565087610" duration="4153000" />
+      <workItem from="1618843507952" duration="5828000" />
     </task>
     <servers />
   </component>
@@ -41,9 +48,9 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1618565214690">
+    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1618889367090">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1618565214690" />
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1618889367090" />
   </component>
 </project>
