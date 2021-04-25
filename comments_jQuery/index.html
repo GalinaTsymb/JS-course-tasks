@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Comments</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="screen.css">
+</head>
+<body>
+<div class="container">
+    <div class="users-comments" id="users-comments">
+        <h1>users comments</h1>
+        <h2>userId: <span class="js-user-id"></span> postId: <span class="js-post-id"></span></h2>
+        <ul class="users-comments-list js-comments-list"></ul>
+    </div>
+</div>
+
+<script class="js-user-template" type="text/template">
+    <li class="users-comments-item" data-id="${data.id}">
+        <p class=""><span>NAME:</span> ${data.name}</p>
+        <p><span>BODY:</span> ${data.body}</p>
+    </li>
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="./render.js"></script>
+<script src="./customization.js"></script>
+</body>
+</html>
