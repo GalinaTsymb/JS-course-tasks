@@ -1,38 +1,48 @@
 /**
- * show goods
- * @param goods
- * @param selector
+ * status fetch
+ * @param response
+ * @returns {Promise<never>|Promise<unknown>}
  */
-export function renderGoods(goods, selector){
-
-    let show = goods.map(function(value, index){
-
-        return `<li class="products__item">
-                       <p class="products__name js-products-name">${value.name}</p>
-                       <p class="products__price">$<span class="js-products-price"> ${(value.price).toFixed(2)}</span></p>
-                       <button type="button" data-action="add" ${checkNullDisabled(value.available)} data-index="${index}" class="btn-add products__btn-add js-add-btn ${checkNullOpacity(value.available)}">add</button>
-                </li>`;
-    }).join("");
-    selector.innerHTML = show;
+export function status (response) {
+    if (response.status !== 200) {
+        return Promise.reject(new Error(response.statusText))
+    }
+    return Promise.resolve(response)
 }
 
 /**
- * inserts attribute "disabled" in tag button, if available = 0
- * @param value
- * @returns {string}
+ * return json from fetch
+ * @param response
+ * @returns {*|Promise<any>}
  */
-function checkNullDisabled(value) {
-    if(value === 0)
-        return 'disabled';
+export function json (response) {
+    return response.json()
 }
 
 /**
- * inserts class "availableNull" in tag button, if available = 0
- * @param value
- * @returns {string}
+ * checks the object for emptiness
+ * @param obj
+ * @returns {boolean}
  */
-function checkNullOpacity(value){
-    if(value === 0)
-        return 'availableNull';
+export function isEmptyObject (obj) {
+     return Object.keys(obj).length === 0;
+}
+
+/**
+ * synchronizes the incoming data with the data in the shopping cart
+ * @param data
+ * @param cart
+ * @returns {*|Uint8Array|BigInt64Array|any[]|Float64Array|Int8Array|Float32Array|Int32Array|Uint32Array|Uint8ClampedArray|BigUint64Array|Int16Array|Uint16Array}
+ */
+export function updateBalances(data, cart){
+    let new_data = data.map(value => {
+        let item = cart[value.id];
+
+        if(item){
+            return item;
+        }
+        return value;
+    });
+    return new_data;
 }
 

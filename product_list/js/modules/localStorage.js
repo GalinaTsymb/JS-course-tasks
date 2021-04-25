@@ -1,9 +1,13 @@
 
-export function getGoodsLS(key){
+export function getProductsLS(key){
     let cartItems = localStorage.getItem(key);
-    cartItems = JSON.parse(cartItems);
+    cartItems = JSON.parse(cartItems) || {};
     return cartItems;
 }
+export function setProductsLS(key,cartItems){
+    localStorage.setItem("productsInCart", JSON.stringify(cartItems));
+}
+
 
 export function quantityInCartLS(key){
     let quantityInCart = localStorage.getItem(key);
@@ -13,6 +17,4 @@ export function quantityInCartLS(key){
 export function setQuantityLS(key, quentity){
     localStorage.setItem(key, quentity);
 }
-export function setGoodLS(key,cartItems ){
-    localStorage.setItem("productsInCart", JSON.stringify(cartItems));
-}
+

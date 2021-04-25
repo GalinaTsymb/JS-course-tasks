@@ -1,170 +1,171 @@
-import {getGoodsLS,
-        setGoodLS,
-        quantityInCartLS
-       } from './localStorage.js';
-
+import {setProductsLS} from "./localStorage";
+import {isEmptyObject, updateBalances} from "./helpers";
 
 export default class Cart {
 
-    constructor(productsInCart, cartNumbers) {
-        this.productsInCart = productsInCart;
-        this.cartNumbers    = cartNumbers;
+    keyCartLS = 'productsInCart';
+    cartItems = {};
+    products_obj = {};
 
+
+    constructor(selector_cart, products){
+        this.selector_cart  = selector_cart;
+        this.products       = products;
+
+        this.init();
     }
 
-    addToCart(targetProduct){
+    addProduct(id){
+        this.plusProduct(id);
+    }
 
-        let cartItems = getGoodsLS(this.productsInCart);
-        //console.log("cartItems", cartItems);
-        //если корзина не пустая
-        if(cartItems != null){
-            if(cartItems[targetProduct.id] == undefined){
-                cartItems = {
-                    ...cartItems,
-                    [targetProduct.id] : targetProduct
-                };
-                cartItems[targetProduct.id].available -=1;
-                cartItems[targetProduct.id].availableInCart +=1;
-            }else{
-                cartItems[targetProduct.id].available -=1;
-                cartItems[targetProduct.id].availableInCart +=1;
-                targetProduct.available -= 1;
-                targetProduct.availableInCart += 1;
+    plusProduct(id){
+        this.updateObject();
+        let product = this.products_obj[id];
+
+        if(!isEmptyObject(this.cartItems)) {
+            if (this.products_obj[id].available > 0){
+                if (this.cartItems[id] == undefined) {
+                    this.cartItems = {
+                        ...this.cartItems,
+                        [product.id]: this.products_obj[id]
+                    };
+                }
+            this.cartItems[id].available--;
+            this.cartItems[id].availableInCart++;
+
             }
-        }else{
-            // если корзина пустая
-            targetProduct.available -= 1;
-            targetProduct.availableInCart = 1;
-            cartItems = {
-                [targetProduct.id]:targetProduct
-            };
         }
-        setGoodLS("productsInCart", cartItems);
+        else{
+            this.cartItems = { [product.id] : this.products_obj[id]};
+            this.cartItems[id].available--;
+            this.cartItems[id].availableInCart++;
+        }
 
-        this.numberItemsCart();
-        this.totalCostADD(targetProduct);
+        this.setProductsLS();
+        this.counterCart();
+        this.totalSum();
+
     }
 
-    numberItemsCart(){
-        let productNumbers = quantityInCartLS(this.cartNumbers);
-        let cartItems      = getGoodsLS(this.productsInCart);
-
-        let number = Object.values(cartItems).reduce((sum, current) => sum + current.availableInCart, 0);
-
-        localStorage.setItem('cartNumbers', number);
-        document.querySelector('.js-counter-cart').textContent = number;
-        /*if(productNumbers){
-            let number = Object.values(cartItems).reduce((sum, current) => sum + current.availableInCart, 0);
-
-            localStorage.setItem('cartNumbers', number);
-            document.querySelector('.js-counter-cart').textContent = number;
-        }else{
-            /!*localStorage.setItem('cartNumbers', 1);
-            document.querySelector('.js-counter-cart').textContent = 1;*!/
-        }*/
+    minusProduct(id) {
+        this.updateObject();
+        if(!isEmptyObject(this.cartItems)){
+            if (this.products_obj[id].availableInCart > 0){
+                this.cartItems[id].available++;
+                this.cartItems[id].availableInCart--;
+            }
+            if(this.products_obj[id].availableInCart === 0){
+                delete this.cartItems[id];
+            }
+        }
+        this.setProductsLS();
+        this.counterCart();
+        this.totalSum();
     }
-    renderCart(data, selector){
 
-        Object.values(data).map((item, index) =>{
-            selector.innerHTML += `<li class="cart__item">
+    getProductCount(id) {
+
+        if(this.cartItems[id]){
+            return this.cartItems[id].availableInCart;
+        }
+        else{
+            return 0;
+        }
+    }
+    getProduct(id){
+        if(this.cartItems[id]){
+            return this.cartItems[id];
+        }
+        else{
+            return 0;
+        }
+    }
+
+    renderCart(){
+       //this.updateObject();
+        this.selector_cart.innerHTML =
+            Object.values(this.cartItems).map(item => {
+                let disabled = item.available <= 0 ? 'disabled': '';
+                return `
+                <li class="cart__item">
                                     <div>
                                         <p class="cart__item-name js-products-name">${item.name}</p>
                                         <div class="cart__item-counter-wrap" >
-                                            <button class="cart__item-minus js-btn-minus" data-index="${item.id}" data-action="minus">-</button>
+                                            <button class="cart__item-minus js-btn-minus" data-id="${item.id}" data-action="minus">-</button>
                                             <span class="cart__item-counter js-counter">${item.availableInCart}</span>
-                                            <button class="cart__item-plus js-btn-plus" ${this.disabledTrue(item.available)} data-index="${item.id}" data-action="plus">+</button>                                        
+                                            <button class="cart__item-plus js-btn-plus" ${disabled} data-id="${item.id}" data-action="plus">+</button>                                        
                                         </div>
                                     </div>
                                     <div class="cart__item-sum-wrap">
                                         <span class="cart__item-sum js-sum">$ ${(item.availableInCart * item.price).toFixed(2)}</span>
                                     </div>                                        
-                                </li>`
+                                </li>
+            `;
+            }).join('');
+    }
+
+    setProductsLS(){
+        localStorage.setItem(this.keyCartLS, JSON.stringify(this.cartItems));
+        this.renderCart();
+        this.selector_cart.dispatchEvent(new Event('cart_update'))
+    }
+
+     getProductsLS(){
+        this.cartItems = localStorage.getItem(this.keyCartLS);
+         this.cartItems = JSON.parse(this.cartItems) || {};
+    }
+
+
+    updateObject(){
+        this.products = updateBalances(this.products, this.cartItems);
+        for (let product of this.products) {
+            this.products_obj[product.id] = product;
+        }
+    }
+
+    counterCart(){
+        let number = Object.values(this.cartItems ).reduce((sum, current) => sum + current.availableInCart, 0);
+        localStorage.setItem('cartNumbers', number);
+        document.querySelector('.js-counter-cart').textContent = number;
+    }
+
+    totalSum(){
+        let number = Object.values(this.cartItems ).reduce((sum, current) => sum + (current.availableInCart * current.price), 0);
+        localStorage.setItem('totalSum', number.toFixed(2));
+        document.querySelector('.js-total-sum').textContent = number.toFixed(2);
+    }
+    eventProcess(){
+
+        (this.selector_cart) && this.selector_cart.addEventListener('click', (e) => {
+            let data = e.target.dataset;
+
+            switch(data.action) {
+                case 'plus':
+                    this.plusProduct(data.id);
+                    break;
+                case 'minus':
+                    this.minusProduct(data.id);
+                    break;
+            }
         });
     }
-    disabledTrue(value){
-        if (value === 0){
-            return "disabled";
-        }
-    }
-    totalCostADD(product){
-        //console.log("the product price is", product.price);
 
-        let cartCost = localStorage.getItem('totalCost');
+    init(){
+        this.getProductsLS();
 
-
-        if(cartCost != null){
-            cartCost = parseFloat(cartCost);
-            localStorage.setItem("totalCost", cartCost + product.price);
-        }else{
-            localStorage.setItem("totalCost",product.price );
+        for (let product of this.products) {
+            this.products_obj[product.id] = product;
         }
 
-    }
-    totalCostRamove(product){
-        //console.log("the product price is", product.price);
-
-        let cartCost = localStorage.getItem('totalCost');
-
-
-        if(cartCost != null){
-            cartCost = parseFloat(cartCost);
-            localStorage.setItem("totalCost", cartCost - product.price);
-        }else{
-            //localStorage.setItem("totalCost",product.price );
-        }
+        this.counterCart();
+        this.totalSum();
+        this.eventProcess();
+        this.renderCart();
 
     }
-    displayCard(selectorCartCont, selectorTotalSum){
-        let cartItems = getGoodsLS(this.productsInCart);
-
-        let cartCost = localStorage.getItem('totalCost');
-
-        if(cartItems && selectorCartCont){
-            this.renderCart(cartItems, selectorCartCont);
-        }
-        selectorTotalSum.innerHTML = cartCost || (0).toFixed(2);
+    on(event, fn) {
+        this.selector_cart.addEventListener(event, fn);
     }
 
-    renderCartChange(selectorCartCont, selectorTotalSum){
-        selectorCartCont.innerHTML = "";
-        this.displayCard(selectorCartCont,selectorTotalSum);
-    }
-    removeFromCart(targetProduct, key){
-        let new_key = key;
-        console.log('key',new_key);
-        let cartItems = getGoodsLS(this.productsInCart);
-        console.log("cartItems", cartItems);
-        //если корзина не пустая
-        if(targetProduct.availableInCart>0){
-            console.log('no delete');
-         /*   if(cartItems[targetProduct.id] == undefined){
-                console.log('del targetProduct id', cartItems[targetProduct.id] );
-                cartItems = {
-                    ...cartItems,
-                    [targetProduct.id] : targetProduct
-                };
-                cartItems[targetProduct.id].available +=1;
-                cartItems[targetProduct.id].availableInCart -=1;
-            }else{*/
-                cartItems[targetProduct.id].available +=1;
-                cartItems[targetProduct.id].availableInCart -=1;
-                targetProduct.available += 1;
-                targetProduct.availableInCart -= 1;
-           /* }*/
-        }
-        if(targetProduct.availableInCart === 0){
-            console.log('delete');
-            delete cartItems[new_key];
-        }
-
-      /*  if(targetProduct.availableInCart === 0){
-            console.log('delete');
-            delete cartItems[new_key];
-        }*/
-
-        setGoodLS("productsInCart", cartItems);
-
-        this.totalCostRamove(targetProduct);
-        this.numberItemsCart();
-    }
 }
